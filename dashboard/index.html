@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocol launch board</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="dot"></span>TOKEN RADAR</div>
+  <p class="tag">Which pre-token protocol is worth farming next — and what to do about it.</p>
+  <p class="src">Snapshot <b id="asof">—</b> · DefiLlama protocol data · Implied values are this board's own claim, not a prediction that a token will launch.</p>
+</header>
+
+<section class="stats" id="stats"></section>
+
+<section class="controls">
+  <input id="q" type="search" placeholder="Search name or slug…" aria-label="Search protocols">
+  <select id="cat" aria-label="Category filter"><option value="">All categories</option></select>
+  <select id="chain" aria-label="Chain filter"><option value="">All chains</option></select>
+  <select id="minTvl" aria-label="Minimum TVL">
+    <option value="0">Any TVL</option>
+    <option value="50000000">$50M+ TVL</option>
+    <option value="100000000">$100M+ TVL</option>
+    <option value="500000000">$500M+ TVL</option>
+  </select>
+  <select id="sort" aria-label="Sort board">
+    <option value="implied">Sort: implied value</option>
+    <option value="tvl">Sort: TVL</option>
+    <option value="growth">Sort: 7-day growth</option>
+    <option value="age">Sort: longest with no token</option>
+  </select>
+  <label class="check"><input id="watchOnly" type="checkbox"> Watchlist only</label>
+  <span id="count" class="count"></span>
+</section>
+
+<main>
+  <table id="board">
+    <thead><tr>
+      <th>#</th><th>Protocol</th><th>Chains</th><th>TVL</th><th>7d</th>
+      <th>No token for</th><th>Implied value</th><th>Score</th><th></th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p id="empty" class="empty" hidden>No protocol matches these filters. Loosen the TVL floor or clear the search.</p>
+</main>
+
+<section id="detail" class="detail" hidden></section>
+
+<section class="launched">
+  <h2>Already launched — not on this board</h2>
+  <p>These protocols record a token that already trades, so no launch is left to farm. The board ranks only protocols that record no token.</p>
+  <div id="launchedList" class="launched-list"></div>
+</section>
+
+<section class="method">
+  <h2>How the value is computed</h2>
+  <p><b>Implied value = TVL × (0.02 + 0.30 × score<sup>1.5</sup>)</b>, where
+  <b>score = 0.45 × log TVL + 0.25 × 7-day growth + 0.20 × years tracked with no token recorded + 0.10 × chain breadth</b>.
+  Every input comes from the snapshot itself — no name is ever hardcoded, so the same formula ranks a protocol
+  that does not exist yet. A protocol is a candidate only when its record carries no token
+  (<i>gecko_id</i> and <i>symbol</i> both null) and it is not a wrapped, staked or bridged product of a token
+  that already trades. The snapshot's record is not proof: a protocol listed here records no token, it is not
+  claimed to have none. Farm plans are generated from the protocol's category, main chain and TVL band, and
+  state what each step costs and how long it takes.</p>
+  <p class="fine">Data: DefiLlama protocols snapshot, frozen at the date above. No network calls: this page renders
+  entirely from its bundled data file. Built for the make.fun token-radar bounty.</p>
+</section>
+
+<script src="farm.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
